@@ -29,22 +29,23 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
+          set -x
+          echo 'snowflake account' $SNOWFLAKE_ACCOUNT
+          echo 'snowflake user' $SNOWFLAKE_USER
           pip install snowflake-cli-labs    
 
           snow git fetch GIT.ML_GIT_STAGE --temporary-connection
           
           snow notebook create DIAMONDS_PROD \
-            --notebook-file '@GIT.snowflake_cicd_demo_3/branches/new_model_fitting/Diamonds Model Fitting/Diamonds Model Fitting.ipynb' \
-            --schema NOTEBOOKS  \
+            --notebook-file '@ML_DATABASE_DEV.GIT.snowflake_cicd_demo_3/branches/new_model_fitting/Diamonds Model Fitting/Diamonds Model Fitting.ipynb' \
+            --schema GIT  \
             --temporary-connection
           
           snow notebook execute DIAMONDS_PROD \
             --database $SNOWFLAKE_DATABASE \
-            --schema NOTEBOOKS \
+            --schema GIT \
             --temporary-connection
 
-          echo 'snowflake account' $SNOWFLAKE_ACCOUNT
-          echo 'snowflake user' $SNOWFLAKE_USER
         env: 
           SNOWFLAKE_ACCOUNT:   ${{ secrets.ACCOUNT }}
           SNOWFLAKE_USER:      ${{ secrets.USER }}
