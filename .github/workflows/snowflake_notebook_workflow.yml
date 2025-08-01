@@ -34,7 +34,7 @@ jobs:
           snow git fetch GIT.ML_GIT_STAGE --temporary-connection
           
           snow notebook create DIAMONDS_PROD \
-            --notebook-file '@GIT.ml_git_stage/branches/new_model_fitting/2_sf_nb_snowflake_ml_model_training_inference.ipynb' \
+            --notebook-file '@GIT.snowflake_cicd_demo_3/branches/new_model_fitting/Diamonds Model Fitting/Diamonds Model Fitting.ipynb' \
             --schema NOTEBOOKS  \
             --temporary-connection
           
@@ -42,6 +42,9 @@ jobs:
             --database $SNOWFLAKE_DATABASE \
             --schema NOTEBOOKS \
             --temporary-connection
+
+          echo 'snowflake account' $SNOWFLAKE_ACCOUNT
+          echo 'snowflake user' $SNOWFLAKE_USER
         env: 
           SNOWFLAKE_ACCOUNT:   ${{ secrets.ACCOUNT }}
           SNOWFLAKE_USER:      ${{ secrets.USER }}
